@@ -1,0 +1,36 @@
+{
+    "name": "quillstack/router",
+    "description": "The routing library working with PSR-7 requests.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "router",
+        "routing",
+        "routes",
+        "php",
+        "php7"
+    ],
+    "homepage": "https://quillstack.com/router",
+    "authors": [
+        {
+            "name": "Radek Ziemniewicz",
+            "email": "open-source@quillstack.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-message": "^1.0",
+        "quillstack/request": "^1.0.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "QuillStack\\Router\\": "src/QuillStack/Router/",
+            "QuillStack\\Mocks\\": "tests/QuillStack/Mocks/"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.1",
+        "phpunit/phpunit": "^9"
+    }
+}
