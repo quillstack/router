@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\Router\RouteTree;
+namespace Quillstack\Router\RouteTree;
 
-use QuillStack\Router\RouteInterface;
+use Quillstack\Router\RouteInterface;
 
 final class RouteTreeBuilder
 {

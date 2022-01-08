@@ -28,9 +28,9 @@ Check the tests coverage:
 phpdbg -qrr vendor/bin/phpunit --coverage-html coverage tests
 ```
 
-## Quill Stack
+### Docker
 
-If you want to know more about other solutions, visit the website: \
-https://quillstack.com/ 
-
-[![The Quill Stack](http://quillstack.com/quillstack.png)](https://quillstack.com/)
+```shell
+$ docker-compose up -d
+$ docker exec -w /var/www/html -it quillstack_router sh
+```

@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\Mocks;
+namespace Quillstack\Mocks\Router;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriFactoryInterface;
-use QuillStack\DI\Container;
-use QuillStack\Http\Request\Factory\ServerRequest\GivenRequestFromGlobalsFactory;
-use QuillStack\Http\Request\Factory\ServerRequest\RequestFromGlobalsFactory;
-use QuillStack\Http\Stream\InputStream;
-use QuillStack\Http\Uri\Factory\UriFactory;
-use QuillStack\Router\Dispatcher;
-use QuillStack\Router\Route;
-use QuillStack\Router\RouteInterface;
-use QuillStack\Router\Router;
+use Quillstack\DI\Container;
+use Quillstack\Http\Request\Factory\ServerRequest\GivenRequestFromGlobalsFactory;
+use Quillstack\Http\Request\Factory\ServerRequest\RequestFromGlobalsFactory;
+use Quillstack\Http\Stream\InputStream;
+use Quillstack\Http\Uri\Factory\UriFactory;
+use Quillstack\Router\Dispatcher;
+use Quillstack\Router\Route;
+use Quillstack\Router\RouteInterface;
+use Quillstack\Router\Router;
 
 abstract class AbstractTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\Router;
+namespace Quillstack\Router;
 
 use Psr\Http\Message\ServerRequestInterface;
 

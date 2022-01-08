@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\Router;
+namespace Quillstack\Router;
 
 use Psr\Http\Message\ServerRequestInterface;
-use QuillStack\Router\Routes\NotFoundRoute;
-use QuillStack\Router\RouteTree\RouteTreeFinder;
+use Quillstack\Router\Routes\NotFoundRoute;
+use Quillstack\Router\RouteTree\RouteTreeFinder;
 
 final class Dispatcher implements DispatcherInterface
 {

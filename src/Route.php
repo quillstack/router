@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\Router;
+namespace Quillstack\Router;
 
 final class Route implements RouteInterface
 {

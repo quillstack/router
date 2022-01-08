@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\Router\Routes;
+namespace Quillstack\Router\Routes;
 
-use QuillStack\Router\Controllers\NotFoundController;
-use QuillStack\Router\RouteInterface;
+use Quillstack\Router\Controllers\NotFoundController;
+use Quillstack\Router\RouteInterface;
 
 final class NotFoundRoute implements RouteInterface
 {

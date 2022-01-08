@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\RouteTree\RouteTreeBuilder;
+namespace Quillstack\Tests\Router\RouteTree\RouteTreeBuilder;
 
 use QuillStack\Mocks\AbstractTest;
 use QuillStack\Mocks\Request\MockLoginRequest;
