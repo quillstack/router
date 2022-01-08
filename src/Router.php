@@ -4,40 +4,16 @@ declare(strict_types=1);
 
 namespace Quillstack\Router;
 
-use QuillStack\Router\RouteTree\RouteTreeBuilder;
+use Quillstack\HttpRequest\HttpRequest;
+use Quillstack\Router\RouteTree\RouteTreeBuilder;
 
-final class Router implements RouterInterface
+class Router implements RouterInterface
 {
-    private const METHOD_GET = 'GET';
-    private const METHOD_POST = 'POST';
-
-    /**
-     * @var array
-     */
     private array $routes;
-
-    /**
-     * @var Route
-     */
     private Route $currentRoute;
-
-    /**
-     * @var array
-     */
     private array $tree = [];
-
-    /**
-     * @var RouteTreeBuilder
-     */
     public RouteTreeBuilder $routeTreeBuilder;
 
-    /**
-     * @param string $method
-     * @param string $path
-     * @param string $controller
-     *
-     * @return $this
-     */
     private function add(string $method, string $path, string $controller): self
     {
         $this->currentRoute = new Route($method, $path, $controller);
@@ -71,9 +47,6 @@ final class Router implements RouterInterface
         return $this->routes;
     }
 
-    /**
-     * @return array
-     */
     public function getTree(): array
     {
         return $this->tree;
@@ -84,7 +57,7 @@ final class Router implements RouterInterface
      */
     public function get(string $path, string $controller): RouterInterface
     {
-        return $this->add(self::METHOD_GET, $path, $controller);
+        return $this->add(HttpRequest::METHOD_GET, $path, $controller);
     }
 
     /**
@@ -92,6 +65,6 @@ final class Router implements RouterInterface
      */
     public function post(string $path, string $controller): RouterInterface
     {
-        return $this->add(self::METHOD_POST, $path, $controller);
+        return $this->add(HttpRequest::METHOD_POST, $path, $controller);
     }
 }

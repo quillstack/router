@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\Mocks\Router;
+namespace Quillstack\Router\Tests\Mocks\Router;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Quillstack\Router\Tests\Mocks\Response\MockResponse;
 
-final class MockRegisterController implements RequestHandlerInterface
+class MockLoginController implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        return new MockResponse();
     }
 }

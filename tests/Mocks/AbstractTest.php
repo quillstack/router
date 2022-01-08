@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Quillstack\Mocks\Router;
+namespace Quillstack\Router\Tests\Mocks;
 
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Quillstack\DI\Container;
-use Quillstack\Http\Request\Factory\ServerRequest\GivenRequestFromGlobalsFactory;
-use Quillstack\Http\Request\Factory\ServerRequest\RequestFromGlobalsFactory;
-use Quillstack\Http\Stream\InputStream;
-use Quillstack\Http\Uri\Factory\UriFactory;
 use Quillstack\Router\Dispatcher;
-use Quillstack\Router\Route;
 use Quillstack\Router\RouteInterface;
 use Quillstack\Router\Router;
+use Quillstack\ServerRequest\Factory\ServerRequest\GivenServerRequestFromGlobalsFactory;
+use Quillstack\ServerRequest\Factory\ServerRequest\ServerRequestFromGlobalsFactory;
+use QuillStack\Stream\InputStream;
+use Quillstack\Uri\Factory\UriFactory;
 
-abstract class AbstractTest extends TestCase
+abstract class AbstractTest
 {
     /**
      * @var array
@@ -29,20 +28,14 @@ abstract class AbstractTest extends TestCase
      */
     public const REQUEST = '';
 
-    /**
-     * @var Container
-     */
     private Container $container;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp(): void
+    public function __construct()
     {
         $config = [
             StreamInterface::class => InputStream::class,
             UriFactoryInterface::class => UriFactory::class,
-            RequestFromGlobalsFactory::class => [
+            ServerRequestFromGlobalsFactory::class => [
                 'server' => static::SERVER,
             ],
         ];
@@ -50,30 +43,19 @@ abstract class AbstractTest extends TestCase
         $this->container = new Container($config);
     }
 
-    /**
-     * @return ServerRequestInterface
-     */
-    public function getRequest(): ServerRequestInterface
+    protected function getRequest(): ServerRequestInterface
     {
-        $factory = $this->container->get(GivenRequestFromGlobalsFactory::class);
+        $factory = $this->container->get(GivenServerRequestFromGlobalsFactory::class);
 
         return $factory->createGivenServerRequest(static::REQUEST);
     }
 
-    /**
-     * @return Router
-     */
-    public function getRouter(): Router
+    protected function getRouter(): Router
     {
         return $this->container->get(Router::class);
     }
 
-    /**
-     * @param Router $router
-     *
-     * @return Route|null
-     */
-    public function getRoute(Router $router): ?RouteInterface
+    protected function getRoute(Router $router): ?RouteInterface
     {
         $dispatcher = $this->container->get(Dispatcher::class);
 

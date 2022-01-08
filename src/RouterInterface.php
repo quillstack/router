@@ -9,7 +9,6 @@ interface RouterInterface
     /**
      * @param string $path
      * @param string $controller
-     * @codeCoverageIgnore
      *
      * @return RouterInterface
      */
@@ -18,7 +17,6 @@ interface RouterInterface
     /**
      * @param string $path
      * @param string $controller
-     * @codeCoverageIgnore
      *
      * @return RouterInterface
      */
@@ -26,15 +24,12 @@ interface RouterInterface
 
     /**
      * @param string $name
-     * @codeCoverageIgnore
      *
      * @return RouterInterface
      */
     public function name(string $name): RouterInterface;
 
     /**
-     * @codeCoverageIgnore
-     *
      * @return array
      */
     public function getRoutes(): array;

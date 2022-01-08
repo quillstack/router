@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace QuillStack\Router;
 
 use QuillStack\Mocks\AbstractTest;
-use QuillStack\Mocks\Request\MockLoginRequest;
-use QuillStack\Mocks\Router\MockLoginController;
-use QuillStack\Mocks\Router\MockRegisterController;
-use QuillStack\Mocks\Router\MockUserController;
+use Quillstack\Router\Tests\Mocks\Request\MockLoginRequest;
+use Quillstack\Router\Tests\Mocks\Router\MockLoginController;
+use Quillstack\Router\Tests\Mocks\Router\MockRegisterController;
+use Quillstack\Router\Tests\Mocks\Router\MockUserController;
 
 final class SimpleWildcardTest extends AbstractTest
 {

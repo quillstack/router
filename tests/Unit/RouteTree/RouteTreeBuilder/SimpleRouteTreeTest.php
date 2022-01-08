@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace QuillStack\RouteTree\RouteTreeBuilder;
 
 use QuillStack\Mocks\AbstractTest;
-use QuillStack\Mocks\Request\MockLoginRequest;
-use QuillStack\Mocks\Router\MockUserController;
-use QuillStack\Router\RouteTree\RouteTreeBuilder;
+use Quillstack\Router\Tests\Mocks\Request\MockLoginRequest;
+use Quillstack\Router\Tests\Mocks\Router\MockUserController;
+use Quillstack\Router\RouteTree\RouteTreeBuilder;
 
 final class SimpleRouteTreeTest extends AbstractTest
 {

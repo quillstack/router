@@ -4,38 +4,13 @@ declare(strict_types=1);
 
 namespace Quillstack\Router;
 
-final class Route implements RouteInterface
+class Route implements RouteInterface
 {
-    /**
-     * @var string
-     */
-    private string $method;
-
-    /**
-     * @var string
-     */
-    private string $path;
-
-    /**
-     * @var string
-     */
-    private string $controller;
-
-    /**
-     * @var string
-     */
     private string $name;
 
-    /**
-     * @param string $method
-     * @param string $path
-     * @param string $controller
-     */
-    public function __construct(string $method, string $path, string $controller)
+    public function __construct(private string $method, private string $path, private string $controller)
     {
-        $this->method = $method;
-        $this->path = $path;
-        $this->controller = $controller;
+        //
     }
 
     /**

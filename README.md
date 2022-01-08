@@ -19,13 +19,7 @@ The routing library working with PSR-7 requests.
 Run tests using a command:
 
 ```
-phpdbg -qrr vendor/bin/phpunit
-```
-
-Check the tests coverage:
-
-```
-phpdbg -qrr vendor/bin/phpunit --coverage-html coverage tests
+phpdbg -qrr ./vendor/bin/unit-tests
 ```
 
 ### Docker

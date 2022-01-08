@@ -8,21 +8,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Quillstack\Router\Routes\NotFoundRoute;
 use Quillstack\Router\RouteTree\RouteTreeFinder;
 
-final class Dispatcher implements DispatcherInterface
+class Dispatcher implements DispatcherInterface
 {
-    /**
-     * @var Router
-     */
     public Router $router;
-
-    /**
-     * @var RouteTreeFinder
-     */
     public RouteTreeFinder $routeTreeFinder;
-
-    /**
-     * @var string
-     */
     public string $routeNotFoundController = '';
 
     /**
@@ -35,11 +24,6 @@ final class Dispatcher implements DispatcherInterface
         return $exactMatch ?? $this->findWildcardMatch($serverRequest);
     }
 
-    /**
-     * @param ServerRequestInterface $serverRequest
-     *
-     * @return Route|null
-     */
     private function findExactMatch(ServerRequestInterface $serverRequest): ?RouteInterface
     {
         $routes = $this->router->getRoutes();
@@ -48,11 +32,6 @@ final class Dispatcher implements DispatcherInterface
         return $routes[$key] ?? null;
     }
 
-    /**
-     * @param ServerRequestInterface $serverRequest
-     *
-     * @return Route|null
-     */
     private function findWildcardMatch(ServerRequestInterface $serverRequest): ?RouteInterface
     {
         $key = $this->getKeyForWildcardMatch($serverRequest);
@@ -65,16 +44,11 @@ final class Dispatcher implements DispatcherInterface
         return $route ?? $this->getRouteNotFound();
     }
 
-    private function getRouteNotFound()
+    private function getRouteNotFound(): NotFoundRoute
     {
         return new NotFoundRoute($this->routeNotFoundController);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return array
-     */
     private function getBranch(string $key): array
     {
         $branch = explode('/', $key);
@@ -83,21 +57,11 @@ final class Dispatcher implements DispatcherInterface
         return $branch;
     }
 
-    /**
-     * @param ServerRequestInterface $serverRequest
-     *
-     * @return string
-     */
     private function getKeyForExactMatch(ServerRequestInterface $serverRequest): string
     {
         return $serverRequest->getMethod() . ' ' . $serverRequest->getRequestTarget();
     }
 
-    /**
-     * @param ServerRequestInterface $serverRequest
-     *
-     * @return string
-     */
     private function getKeyForWildcardMatch(ServerRequestInterface $serverRequest): string
     {
         return $serverRequest->getMethod() . $serverRequest->getRequestTarget();
