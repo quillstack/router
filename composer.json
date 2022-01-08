@@ -10,27 +10,37 @@
         "php",
         "php7"
     ],
-    "homepage": "https://quillstack.com/router",
+    "homepage": "https://quillstack.org/router",
     "authors": [
         {
             "name": "Radek Ziemniewicz",
-            "email": "open-source@quillstack.com"
+            "email": "radek@quillstack.org"
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "psr/http-server-handler": "^1.0",
         "psr/http-message": "^1.0",
-        "quillstack/request": "^1.0.5"
+        "quillstack/http-request": "^0.0.1",
+        "quillstack/server-request": "^0.0.2"
     },
     "autoload": {
         "psr-4": {
-            "QuillStack\\Router\\": "src/QuillStack/Router/",
-            "QuillStack\\Mocks\\": "tests/QuillStack/Mocks/"
+            "Quillstack\\Router\\": "src/",
+            "Quillstack\\Router\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.x-dev"
         }
     },
     "require-dev": {
-        "symfony/var-dumper": "^5.1",
-        "phpunit/phpunit": "^9"
+        "quillstack/unit-tests": "^0.2.10"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
     }
 }

@@ -1,24 +1,18 @@
 language: php
 sudo: false
-
 php:
-    - 7.4
-
+    - 8.0
 cache:
     directories:
         - $HOME/.composer/cache
-
 addons:
     sonarcloud:
         organization: "quillstack"
         token:
-            secure: "cxeFigZLrvghVpoqfEIYwoEtJRNIcUeVfapZDW9KO4ZXkUJswuHBtU30pTKbjUP6xCV4LuLu5TH+lLkzkmLsbJElAeISmFIGD6OoaMjcw0w94eG+XO24N60LYHd6L/qeNHXyi69g42dja+lWYnpXhsn3gAmJMf7SQHbavviz5Z5FpceiBnONqxuMTyyXxCTVOG3MWrgnuLNZ9BJFE+QlaKMkA8g18MYAsbCQRkzQmPU3YWNzTwGAHld53dUw7KVH3Y9azp7vnbpZrm7c1VT4lJobUW46T5mla9HrpAqqVjDL8yS5YFOYrg96dKCVwL0m2vwW6xkdrWjO+qmZwzqeVPHknAYDbmk20Hsycaahou1ip3qWKLbL9my21SKtkDaYLpjjeFe2uIVDmm7VlIXm3xCetaYc3XSBY3Am0jhFMj67FwY2DwErTQAsZZRrIio+gusLQ2cmkmLTlW9ilpHYTaS0D1i+hzi7MbJCW4k8tKhnfm1NUJs+f6DmxFOzDeNucpsZ1PQbgUkg7qpJvPqgH1thRaAtT0OCQMdcjjb3wyM0KS8VVLwApz4no/FQAp9OMopH0XwjaGSkoNzwvgLs4hHwR4c9v0McHDBOorEo3b1JNBuqO6/tFB5sEPDA0hH2DhA9BU6q/RJG8XGGmG/67UZ+1ryqP/7gR1BLZy0dQ8w="
-
+            secure: "GTkK0+4yveEXNS3XYg8140n7iJ6zEYROInvDtwBl/TBRPo1E9poCXJqIuiId3dGcuPWJ9TLFoKJlVrMF6jI4qzYv4IL2ednmzk/6/eJPewmJQ3B8fDly5DdENbdDA5npgyqLKfoal/N961+cZ11oftvzCBmflRNXcMvL7jfT1rZoN+QE7yvLU/pk6bLTgkUQHME0DZDnOTI0T8zaN1J2f2oSH8/zwAsGIVI645bXn7+4MQ6ZBiGgeVuoH4+BtDb/iJ6OV3baFGQpTomknAs+GUcuzf+OaIBH04EgsS9T9GbuGwn7lI0U7DgbcGfmGj1et2s5ullY7ANQrze304uOnI7ZKWxVBf2Eq0PaurslBucmMjtFzN3b4WCWMFdnx9GrDib4oeqJKBjhfRLE84vt3Kx+jdfnm1z9JlEhuorHlU1wjugEXHUCQNcvSJZDXJ/Mc69ptknVgRtn+0JmoDUJbdkkmbAyvbaTZBtItT1CTDDlgebmvrh3uJnPT30OL8ksCna8tSYPW0zkTzyIbKDeliOjoYTYaBjm6hRgJi+7lACMRxP4lQaOamc7Kf6TYi2A2LdHSNfUrxAP63xI3zZFV5jtfOkCMynO4CfiP5/l/KmuSQyqiNVQoXLfPhy9VElnIJ7+fVi8kFrzWgs1HrQqg+p/PaKykehnkfoO3r0QiAE="
 git:
     depth: false
-
 install: composer update --no-interaction --no-suggest --no-progress
-
 script:
-    - phpdbg -qrr vendor/bin/phpunit  --coverage-clover phpunit.coverage.xml --log-junit phpunit.report.xml
+    - phpdbg -qrr ./vendor/bin/unit-tests
     - sonar-scanner
