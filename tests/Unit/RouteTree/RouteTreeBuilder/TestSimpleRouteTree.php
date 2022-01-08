@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace QuillStack\RouteTree\RouteTreeBuilder;
+namespace Quillstack\Router\Tests\Unit\RouteTree\RouteTreeBuilder;
 
-use QuillStack\Mocks\AbstractTest;
+use Quillstack\Router\Tests\Mocks\AbstractTest;
 use Quillstack\Router\Tests\Mocks\Request\MockLoginRequest;
 use Quillstack\Router\Tests\Mocks\Router\MockUserController;
 use Quillstack\Router\RouteTree\RouteTreeBuilder;
+use Quillstack\UnitTests\AssertEmpty;
+use Quillstack\UnitTests\AssertEqual;
 
-final class SimpleRouteTreeTest extends AbstractTest
+class TestSimpleRouteTree extends AbstractTest
 {
     public const REQUEST = MockLoginRequest::class;
     public const SERVER = [
@@ -19,7 +21,12 @@ final class SimpleRouteTreeTest extends AbstractTest
         'SERVER_PROTOCOL' => '1.1',
     ];
 
-    public function testSimpleWildcardTree()
+    public function __construct(private AssertEmpty $assertEmpty, private AssertEqual $assertEqual)
+    {
+        parent::__construct();
+    }
+
+    public function simpleWildcardTree()
     {
         $router = $this->getRouter();
         $router->get('/user/:id/:name', MockUserController::class)->name('user');
@@ -29,8 +36,8 @@ final class SimpleRouteTreeTest extends AbstractTest
         $routeTreeBuilder = new RouteTreeBuilder();
         $routeTreeBuilder->build($tree, $route, 'GET', '/user/:id/:name');
 
-        $this->assertNotEmpty($tree);
-        $this->assertEquals([
+        $this->assertEmpty->isNotEmpty($tree);
+        $this->assertEqual->equal([
             'GET' => [
                 'user' => [
                     '*' => [

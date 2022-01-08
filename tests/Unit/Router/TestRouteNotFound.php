@@ -25,8 +25,8 @@ class TestRouteNotFound extends AbstractTest
     ];
 
     public function __construct(
-        private AssertObject  $assertObject,
-        private AssertEqual   $assertEqual,
+        private AssertObject $assertObject,
+        private AssertEqual $assertEqual,
         private AssertBoolean $assertBoolean
     ) {
         parent::__construct();
