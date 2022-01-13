@@ -22,21 +22,16 @@
         "psr/http-server-handler": "^1.0",
         "psr/http-message": "^1.0",
         "quillstack/http-request": "^0.0.1",
-        "quillstack/server-request": "^0.0.2"
+        "quillstack/server-request": "^0.0.3"
+    },
+    "require-dev": {
+        "quillstack/unit-tests": "^0.2.14"
     },
     "autoload": {
         "psr-4": {
             "Quillstack\\Router\\": "src/",
             "Quillstack\\Router\\Tests\\": "tests/"
         }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-main": "0.x-dev"
-        }
-    },
-    "require-dev": {
-        "quillstack/unit-tests": "^0.2.10"
     },
     "extra": {
         "branch-alias": {
