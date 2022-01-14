@@ -22,7 +22,7 @@
         "psr/http-server-handler": "^1.0",
         "psr/http-message": "^1.0",
         "quillstack/http-request": "^0.0.1",
-        "quillstack/server-request": "^0.0.3"
+        "quillstack/server-request": "^0.0.4"
     },
     "require-dev": {
         "quillstack/unit-tests": "^0.2.14"
