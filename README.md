@@ -12,6 +12,17 @@
 
 The routing library working with PSR-7 requests.
 
+### Dispatching
+
+`Dispatcher::dispatch()` answers with the route that matched, or with one of two routes
+standing for having matched nothing:
+
+- `NotFoundRoute` — nothing is registered for this path.
+- `MethodNotAllowedRoute` — the path is registered, but not for this method.
+  `getAllowedMethods()` names the ones it does answer to, which is what a 405 has to carry.
+
+Both say `false` to `isSuccess()`, so anything only asking whether it matched keeps working.
+
 ### Unit tests
 
 Run tests using a command:

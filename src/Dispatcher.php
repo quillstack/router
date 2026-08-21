@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Quillstack\Router;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Quillstack\HttpRequest\HttpRequest;
+use Quillstack\Router\Routes\MethodNotAllowedRoute;
 use Quillstack\Router\Routes\NotFoundRoute;
 use Quillstack\Router\RouteTree\RouteTreeFinder;
 
@@ -25,9 +27,43 @@ class Dispatcher implements DispatcherInterface
         $method = strtoupper($serverRequest->getMethod());
         $path = $this->getPath($serverRequest);
 
+        $route = $this->findRoute($method, $path);
+
+        if ($route !== null) {
+            return $route;
+        }
+
+        // The path may well be registered, just not for this method. Saying so is the
+        // difference between `there is no such thing` and `not that way`.
+        $allowed = $this->methodsAllowedFor($path, $method);
+
+        return $allowed === []
+            ? new NotFoundRoute()
+            : new MethodNotAllowedRoute($allowed);
+    }
+
+    private function findRoute(string $method, string $path): ?RouteInterface
+    {
         return $this->findExactMatch($method, $path)
-            ?? $this->findParameterMatch($method, $path)
-            ?? new NotFoundRoute();
+            ?? $this->findParameterMatch($method, $path);
+    }
+
+    /**
+     * Every method this path answers to, apart from the one that was asked for.
+     *
+     * @return string[]
+     */
+    private function methodsAllowedFor(string $path, string $asked): array
+    {
+        $allowed = [];
+
+        foreach (HttpRequest::AVAILABLE_METHODS as $method) {
+            if ($method !== $asked && $this->findRoute($method, $path) !== null) {
+                $allowed[] = $method;
+            }
+        }
+
+        return $allowed;
     }
 
     private function findExactMatch(string $method, string $path): ?RouteInterface
