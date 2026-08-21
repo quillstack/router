@@ -50,8 +50,7 @@ class TestRouteApi
 
     public function namingWithoutARouteIsReported()
     {
-        $router = new Router();
-        $router->routeTreeBuilder = new RouteTreeBuilder();
+        $router = new Router(new RouteTreeBuilder());
 
         $this->assertExceptions->expect(RouteNameNotSetException::class);
 

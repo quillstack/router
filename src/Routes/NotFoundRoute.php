@@ -10,7 +10,11 @@ class NotFoundRoute implements RouteInterface
 {
     private string $name = 'not-found';
 
-    public function __construct(private string $controller)
+    /**
+     * @param string $controller a controller to answer with, when the application has one
+     *                           for requests matching no route
+     */
+    public function __construct(private readonly string $controller = '')
     {
         //
     }

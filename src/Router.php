@@ -24,7 +24,10 @@ class Router implements RouterInterface
 
     private array $tree = [];
 
-    public RouteTreeBuilder $routeTreeBuilder;
+    public function __construct(private readonly RouteTreeBuilder $routeTreeBuilder)
+    {
+        //
+    }
 
     /**
      * {@inheritDoc}

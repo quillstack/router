@@ -10,9 +10,12 @@ use Quillstack\Router\RouteTree\RouteTreeFinder;
 
 class Dispatcher implements DispatcherInterface
 {
-    public Router $router;
-    public RouteTreeFinder $routeTreeFinder;
-    public string $routeNotFoundController = '';
+    public function __construct(
+        private readonly Router $router,
+        private readonly RouteTreeFinder $routeTreeFinder
+    ) {
+        //
+    }
 
     /**
      * {@inheritDoc}
@@ -24,7 +27,7 @@ class Dispatcher implements DispatcherInterface
 
         return $this->findExactMatch($method, $path)
             ?? $this->findParameterMatch($method, $path)
-            ?? new NotFoundRoute($this->routeNotFoundController);
+            ?? new NotFoundRoute();
     }
 
     private function findExactMatch(string $method, string $path): ?RouteInterface
