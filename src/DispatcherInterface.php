@@ -9,9 +9,8 @@ use Psr\Http\Message\ServerRequestInterface;
 interface DispatcherInterface
 {
     /**
-     * @param ServerRequestInterface $serverRequest
-     *
-     * @return RouteInterface|null
+     * Finds the route matching the request. When nothing matches, a route pointing at the
+     * not-found controller is returned, so the result is never `null`.
      */
-    public function dispatch(ServerRequestInterface $serverRequest): ?RouteInterface;
+    public function dispatch(ServerRequestInterface $serverRequest): RouteInterface;
 }

@@ -5,20 +5,39 @@ declare(strict_types=1);
 namespace Quillstack\Router;
 
 use Quillstack\HttpRequest\HttpRequest;
+use Quillstack\Router\Exceptions\RouteNameNotSetException;
 use Quillstack\Router\RouteTree\RouteTreeBuilder;
 
 class Router implements RouterInterface
 {
-    private array $routes;
-    private Route $currentRoute;
+    /**
+     * All registered routes, keyed by `METHOD /path`.
+     */
+    private array $routes = [];
+
+    /**
+     * Routes registered by the last call, so `name()` can be chained onto them.
+     *
+     * @var RouteInterface[]
+     */
+    private array $currentRoutes = [];
+
     private array $tree = [];
+
     public RouteTreeBuilder $routeTreeBuilder;
 
-    private function add(string $method, string $path, string $controller): self
+    /**
+     * {@inheritDoc}
+     */
+    public function map(string $method, string $path, string $controller): RouterInterface
     {
-        $this->currentRoute = new Route($method, $path, $controller);
-        $this->updateCurrentRoute();
-        $this->routeTreeBuilder->build($this->tree, $this->currentRoute, $method, $path);
+        $method = strtoupper($method);
+        $path = self::normalisePath($path);
+        $route = new Route($method, $path, $controller);
+
+        $this->routes[$route->getKey()] = $route;
+        $this->currentRoutes = [$route];
+        $this->routeTreeBuilder->build($this->tree, $route, $method, $path);
 
         return $this;
     }
@@ -26,17 +45,98 @@ class Router implements RouterInterface
     /**
      * {@inheritDoc}
      */
-    public function name(string $name): self
+    public function match(array $methods, string $path, string $controller): RouterInterface
     {
-        $this->currentRoute->setName($name);
-        $this->updateCurrentRoute();
+        $routes = [];
+
+        foreach ($methods as $method) {
+            $this->map($method, $path, $controller);
+            $routes[] = $this->currentRoutes[0];
+        }
+
+        $this->currentRoutes = $routes;
 
         return $this;
     }
 
-    private function updateCurrentRoute(): void
+    /**
+     * {@inheritDoc}
+     */
+    public function any(string $path, string $controller): RouterInterface
     {
-        $this->routes[$this->currentRoute->getKey()] = $this->currentRoute;
+        return $this->match(HttpRequest::AVAILABLE_METHODS, $path, $controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function get(string $path, string $controller): RouterInterface
+    {
+        return $this->map(HttpRequest::METHOD_GET, $path, $controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function post(string $path, string $controller): RouterInterface
+    {
+        return $this->map(HttpRequest::METHOD_POST, $path, $controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function put(string $path, string $controller): RouterInterface
+    {
+        return $this->map(HttpRequest::METHOD_PUT, $path, $controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function patch(string $path, string $controller): RouterInterface
+    {
+        return $this->map(HttpRequest::METHOD_PATCH, $path, $controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function delete(string $path, string $controller): RouterInterface
+    {
+        return $this->map(HttpRequest::METHOD_DELETE, $path, $controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function options(string $path, string $controller): RouterInterface
+    {
+        return $this->map(HttpRequest::METHOD_OPTIONS, $path, $controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function head(string $path, string $controller): RouterInterface
+    {
+        return $this->map(HttpRequest::METHOD_HEAD, $path, $controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function name(string $name): RouterInterface
+    {
+        if ($this->currentRoutes === []) {
+            throw new RouteNameNotSetException('No route to name, call a routing method first');
+        }
+
+        foreach ($this->currentRoutes as $route) {
+            $route->setName($name);
+        }
+
+        return $this;
     }
 
     /**
@@ -47,24 +147,32 @@ class Router implements RouterInterface
         return $this->routes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoute(string $name): ?RouteInterface
+    {
+        foreach ($this->routes as $route) {
+            if ($route->getName() === $name) {
+                return $route;
+            }
+        }
+
+        return null;
+    }
+
     public function getTree(): array
     {
         return $this->tree;
     }
 
     /**
-     * {@inheritDoc}
+     * Brings a path to the form used as a routing key: a leading slash, and no trailing one.
      */
-    public function get(string $path, string $controller): RouterInterface
+    public static function normalisePath(string $path): string
     {
-        return $this->add(HttpRequest::METHOD_GET, $path, $controller);
-    }
+        $path = '/' . trim($path, '/');
 
-    /**
-     * {@inheritDoc}
-     */
-    public function post(string $path, string $controller): RouterInterface
-    {
-        return $this->add(HttpRequest::METHOD_POST, $path, $controller);
+        return $path === '/' ? '/' : rtrim($path, '/');
     }
 }

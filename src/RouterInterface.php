@@ -7,30 +7,48 @@ namespace Quillstack\Router;
 interface RouterInterface
 {
     /**
-     * @param string $path
-     * @param string $controller
-     *
-     * @return RouterInterface
+     * Registers a route for a single HTTP method.
      */
+    public function map(string $method, string $path, string $controller): RouterInterface;
+
+    /**
+     * Registers the same path and controller for every given HTTP method.
+     *
+     * @param string[] $methods
+     */
+    public function match(array $methods, string $path, string $controller): RouterInterface;
+
+    /**
+     * Registers the path for every HTTP method the framework supports.
+     */
+    public function any(string $path, string $controller): RouterInterface;
+
     public function get(string $path, string $controller): RouterInterface;
 
-    /**
-     * @param string $path
-     * @param string $controller
-     *
-     * @return RouterInterface
-     */
     public function post(string $path, string $controller): RouterInterface;
 
+    public function put(string $path, string $controller): RouterInterface;
+
+    public function patch(string $path, string $controller): RouterInterface;
+
+    public function delete(string $path, string $controller): RouterInterface;
+
+    public function options(string $path, string $controller): RouterInterface;
+
+    public function head(string $path, string $controller): RouterInterface;
+
     /**
-     * @param string $name
-     *
-     * @return RouterInterface
+     * Names the routes registered by the previous call.
      */
     public function name(string $name): RouterInterface;
 
     /**
-     * @return array
+     * @return RouteInterface[]
      */
     public function getRoutes(): array;
+
+    /**
+     * Finds a registered route by its name.
+     */
+    public function getRoute(string $name): ?RouteInterface;
 }

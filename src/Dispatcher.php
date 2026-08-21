@@ -17,53 +17,50 @@ class Dispatcher implements DispatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function dispatch(ServerRequestInterface $serverRequest): ?RouteInterface
+    public function dispatch(ServerRequestInterface $serverRequest): RouteInterface
     {
-        $exactMatch = $this->findExactMatch($serverRequest);
+        $method = strtoupper($serverRequest->getMethod());
+        $path = $this->getPath($serverRequest);
 
-        return $exactMatch ?? $this->findWildcardMatch($serverRequest);
+        return $this->findExactMatch($method, $path)
+            ?? $this->findParameterMatch($method, $path)
+            ?? new NotFoundRoute($this->routeNotFoundController);
     }
 
-    private function findExactMatch(ServerRequestInterface $serverRequest): ?RouteInterface
+    private function findExactMatch(string $method, string $path): ?RouteInterface
     {
         $routes = $this->router->getRoutes();
-        $key = $this->getKeyForExactMatch($serverRequest);
 
-        return $routes[$key] ?? null;
+        return $routes["{$method} {$path}"] ?? null;
     }
 
-    private function findWildcardMatch(ServerRequestInterface $serverRequest): ?RouteInterface
+    private function findParameterMatch(string $method, string $path): ?RouteInterface
     {
-        $key = $this->getKeyForWildcardMatch($serverRequest);
-        $tree = $this->router->getTree();
-        $route = $this->routeTreeFinder->findRoute(
-            $tree,
-            $this->getBranch($key)
+        return $this->routeTreeFinder->findRoute(
+            $this->router->getTree(),
+            $this->getBranch($method, $path)
         );
-
-        return $route ?? $this->getRouteNotFound();
     }
 
-    private function getRouteNotFound(): NotFoundRoute
+    /**
+     * The path used for routing, taken from the URI so that a query string is left out.
+     */
+    private function getPath(ServerRequestInterface $serverRequest): string
     {
-        return new NotFoundRoute($this->routeNotFoundController);
+        return Router::normalisePath(
+            $serverRequest->getUri()->getPath()
+        );
     }
 
-    private function getBranch(string $key): array
+    /**
+     * Splits the request into the segments walked through the route tree. The closing empty
+     * segment marks the end of the branch, where the route itself is stored.
+     */
+    private function getBranch(string $method, string $path): array
     {
-        $branch = explode('/', $key);
+        $branch = explode('/', trim($method . $path, '/'));
         $branch[] = '';
 
         return $branch;
-    }
-
-    private function getKeyForExactMatch(ServerRequestInterface $serverRequest): string
-    {
-        return $serverRequest->getMethod() . ' ' . $serverRequest->getRequestTarget();
-    }
-
-    private function getKeyForWildcardMatch(ServerRequestInterface $serverRequest): string
-    {
-        return $serverRequest->getMethod() . $serverRequest->getRequestTarget();
     }
 }

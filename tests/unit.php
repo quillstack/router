@@ -10,4 +10,11 @@ return [
     \Quillstack\Router\Tests\Unit\Router\TestSimpleWildcard::class,
     \Quillstack\Router\Tests\Unit\Router\TestRouteWithPostRequest::class,
     \Quillstack\Router\Tests\Unit\Router\TestSimpleRoute::class,
+
+    \Quillstack\Router\Tests\Unit\Router\TestRouteParameters::class,
+    \Quillstack\Router\Tests\Unit\Router\TestQueryStringIsIgnored::class,
+    \Quillstack\Router\Tests\Unit\Router\TestExactRouteWithQueryString::class,
+    \Quillstack\Router\Tests\Unit\Router\TestStaticSegmentWins::class,
+    \Quillstack\Router\Tests\Unit\Router\TestBacktracking::class,
+    \Quillstack\Router\Tests\Unit\Router\TestHttpMethods::class,
 ];

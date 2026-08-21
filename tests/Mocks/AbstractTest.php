@@ -13,7 +13,7 @@ use Quillstack\Router\RouteInterface;
 use Quillstack\Router\Router;
 use Quillstack\ServerRequest\Factory\ServerRequest\GivenServerRequestFromGlobalsFactory;
 use Quillstack\ServerRequest\Factory\ServerRequest\ServerRequestFromGlobalsFactory;
-use QuillStack\Stream\InputStream;
+use Quillstack\Stream\InputStream;
 use Quillstack\Uri\Factory\UriFactory;
 
 abstract class AbstractTest

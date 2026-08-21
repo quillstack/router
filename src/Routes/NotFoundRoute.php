@@ -34,6 +34,22 @@ class NotFoundRoute implements RouteInterface
     /**
      * {@inheritDoc}
      */
+    public function getMethod(): string
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPath(): string
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getController(): string
     {
         return $this->controller;
@@ -53,5 +69,37 @@ class NotFoundRoute implements RouteInterface
     public function getKey(): string
     {
         return $this->name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParameterNames(): array
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParameters(): array
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParameter(string $name, ?string $default = null): ?string
+    {
+        return $default;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function withParameters(array $parameters): RouteInterface
+    {
+        return $this;
     }
 }

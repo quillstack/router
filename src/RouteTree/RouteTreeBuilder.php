@@ -4,41 +4,52 @@ declare(strict_types=1);
 
 namespace Quillstack\Router\RouteTree;
 
+use Quillstack\Router\Route;
 use Quillstack\Router\RouteInterface;
 
 class RouteTreeBuilder
 {
+    /**
+     * The tree node standing for a path segment holding a parameter.
+     */
+    public const WILDCARD = '*';
+
+    /**
+     * Adds the route to the tree, but only when its path holds parameters. Paths without
+     * parameters are matched by an exact lookup, which needs no tree.
+     */
     public function build(array &$tree, RouteInterface $route, string $method, string $path): void
     {
-        if (!$this->hasWildcard($path)) {
+        if (!$this->hasParameters($path)) {
             return;
         }
 
+        $parts = explode('/', trim($method . $path, '/'));
 
-        $treePath = $method . $path;
-        $parts = explode('/', trim($treePath, '/'));
         $this->add($route, $parts, $tree);
     }
 
-    private function add(RouteInterface $route, array $indexes, array &$tree = null, array $value = []): void
+    private function add(RouteInterface $route, array $indexes, ?array &$tree = null): void
     {
         if (count($indexes) === 0) {
             $tree = [
                 '' => $route,
             ];
-        } else {
-            $index = array_shift($indexes);
 
-            if ($this->hasWildcard($index)) {
-                $index = '*';
-            }
-
-            $this->add($route, $indexes, $tree[$index], $value);
+            return;
         }
+
+        $index = array_shift($indexes);
+
+        if (Route::isParameter($index)) {
+            $index = self::WILDCARD;
+        }
+
+        $this->add($route, $indexes, $tree[$index]);
     }
 
-    private function hasWildcard(string $path): bool
+    private function hasParameters(string $path): bool
     {
-        return is_string(strstr($path, ':'));
+        return Route::readParameterNames($path) !== [];
     }
 }
