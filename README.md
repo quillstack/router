@@ -1,6 +1,6 @@
 # Quillstack Router
 
-[![Build Status](https://app.travis-ci.com/quillstack/router.svg?branch=master)](https://app.travis-ci.com/quillstack/router)
+[![Tests](https://github.com/quillstack/router/actions/workflows/tests.yml/badge.svg)](https://github.com/quillstack/router/actions/workflows/tests.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=quillstack_router&metric=alert_status)](https://sonarcloud.io/dashboard?id=quillstack_router)
 [![Downloads](https://img.shields.io/packagist/dt/quillstack/router.svg)](https://packagist.org/packages/quillstack/router)
 [![StyleCI](https://github.styleci.io/repos/291464195/shield?branch=main)](https://github.styleci.io/repos/291464195?branch=main)
