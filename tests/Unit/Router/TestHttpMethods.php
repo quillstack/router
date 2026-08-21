@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Quillstack\Router\Tests\Unit\Router;
 
 use Quillstack\HttpRequest\HttpRequest;
-use Quillstack\Router\Router;
-use Quillstack\Router\RouteTree\RouteTreeBuilder;
 use Quillstack\Router\Tests\Mocks\AbstractTest;
 use Quillstack\Router\Tests\Mocks\Request\MockLoginRequest;
 use Quillstack\Router\Tests\Mocks\Router\MockUserController;
@@ -32,25 +30,14 @@ class TestHttpMethods extends AbstractTest
         parent::__construct();
     }
 
-    /**
-     * The container hands out a single Router, so tests counting routes build their own.
-     */
-    private function newRouter(): Router
-    {
-        $router = new Router();
-        $router->routeTreeBuilder = new RouteTreeBuilder();
-
-        return $router;
-    }
-
     public function noRoutesAreRegisteredByDefault()
     {
-        $this->assertEqual->equal([], $this->newRouter()->getRoutes());
+        $this->assertEqual->equal([], $this->getRouter()->getRoutes());
     }
 
     public function everyMethodRegistersItsOwnRoute()
     {
-        $router = $this->newRouter();
+        $router = $this->getRouter();
         $router->get('/users/:user', MockUserController::class);
         $router->post('/users/:user', MockUserController::class);
         $router->put('/users/:user', MockUserController::class);
@@ -70,7 +57,7 @@ class TestHttpMethods extends AbstractTest
 
     public function anyRegistersEveryMethodUnderOneName()
     {
-        $router = $this->newRouter();
+        $router = $this->getRouter();
         $router->any('/users/:user', MockUserController::class)->name('user.any');
         $routes = $router->getRoutes();
 
@@ -83,7 +70,7 @@ class TestHttpMethods extends AbstractTest
 
     public function matchRegistersOnlyTheGivenMethods()
     {
-        $router = $this->newRouter();
+        $router = $this->getRouter();
         $router->match(['PUT', 'PATCH'], '/users/:user', MockUserController::class)->name('user.update');
         $routes = $router->getRoutes();
 
@@ -94,7 +81,7 @@ class TestHttpMethods extends AbstractTest
 
     public function routesAreFoundByName()
     {
-        $router = $this->newRouter();
+        $router = $this->getRouter();
         $router->get('/users/:user', MockUserController::class)->name('user.show');
 
         $this->assertEqual->equal('GET /users/:user', $router->getRoute('user.show')->getKey());
@@ -103,7 +90,7 @@ class TestHttpMethods extends AbstractTest
 
     public function trailingSlashesAreNormalised()
     {
-        $router = $this->newRouter();
+        $router = $this->getRouter();
         $router->get('/users/:user/', MockUserController::class);
 
         $this->assertBoolean->isTrue(isset($router->getRoutes()['GET /users/:user']));
