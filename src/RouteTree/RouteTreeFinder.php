@@ -12,12 +12,19 @@ class RouteTreeFinder
      * Walks the route tree along the given branch and returns the matching route, carrying the
      * values matched by its parameters. A literal segment always wins over a parameter, and the
      * search falls back to the parameter node when the literal one leads nowhere.
+     *
+     * @param array<string, mixed> $tree
+     * @param string[] $branch
      */
     public function findRoute(array $tree, array $branch): ?RouteInterface
     {
         return $this->walk($tree, $branch, 0, []);
     }
 
+    /**
+     * @param string[] $branch
+     * @param string[] $values
+     */
     private function walk(mixed $node, array $branch, int $index, array $values): ?RouteInterface
     {
         if ($index === count($branch)) {
@@ -52,6 +59,8 @@ class RouteTreeFinder
 
     /**
      * Binds the matched values to the parameter names declared by the route.
+     *
+     * @param string[] $values
      */
     private function withValues(RouteInterface $route, array $values): RouteInterface
     {

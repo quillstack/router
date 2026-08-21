@@ -17,6 +17,8 @@ class RouteTreeBuilder
     /**
      * Adds the route to the tree, but only when its path holds parameters. Paths without
      * parameters are matched by an exact lookup, which needs no tree.
+     *
+     * @param array<string, mixed> $tree
      */
     public function build(array &$tree, RouteInterface $route, string $method, string $path): void
     {
@@ -29,12 +31,17 @@ class RouteTreeBuilder
         $this->add($route, $parts, $tree);
     }
 
-    private function add(RouteInterface $route, array $indexes, ?array &$tree = null): void
+    /**
+     * @param string[] $indexes
+     * @param array<string, mixed> $tree
+     */
+    private function add(RouteInterface $route, array $indexes, array &$tree): void
     {
-        if (count($indexes) === 0) {
-            $tree = [
-                '' => $route,
-            ];
+        if ($indexes === []) {
+            // Only the end of this branch is written. Replacing the whole node used to
+            // throw away everything below it, so registering `/users/:user` after
+            // `/users/:user/posts/:post` left the longer one unreachable.
+            $tree[''] = $route;
 
             return;
         }
@@ -43,6 +50,10 @@ class RouteTreeBuilder
 
         if (Route::isParameter($index)) {
             $index = self::WILDCARD;
+        }
+
+        if (!isset($tree[$index]) || !is_array($tree[$index])) {
+            $tree[$index] = [];
         }
 
         $this->add($route, $indexes, $tree[$index]);

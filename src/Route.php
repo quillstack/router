@@ -16,10 +16,16 @@ class Route implements RouteInterface
     /**
      * Names of the parameters found in the path, in the order they appear.
      */
+    /**
+     * @var string[]
+     */
     private array $parameterNames;
 
     /**
      * Values matched for the parameters of this route, filled in while dispatching.
+     */
+    /**
+     * @var array<string, string>
      */
     private array $parameters = [];
 
@@ -30,6 +36,8 @@ class Route implements RouteInterface
 
     /**
      * Reads the parameter names of the given path, keeping the order they appear in.
+     *
+     * @return string[]
      */
     public static function readParameterNames(string $path): array
     {
@@ -37,7 +45,11 @@ class Route implements RouteInterface
 
         foreach (explode('/', $path) as $segment) {
             if (preg_match(self::PARAMETER_PATTERN, $segment, $matches)) {
-                $names[] = ($matches['brace'] ?? '') !== '' ? $matches['brace'] : $matches['colon'] ?? '';
+                // Only the branch which matched is present in $matches, so neither key is
+                // certain. The analysis reads both as always set; PHP disagrees out loud
+                // with "Undefined array key" as soon as a `:name` is parsed.
+                /** @phpstan-ignore nullCoalesce.offset */
+                $names[] = ($matches['brace'] ?? '') !== '' ? $matches['brace'] : ($matches['colon'] ?? '');
             }
         }
 

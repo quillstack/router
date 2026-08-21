@@ -19,4 +19,5 @@ return [
     \Quillstack\Router\Tests\Unit\Router\TestHttpMethods::class,
     \Quillstack\Router\Tests\Unit\Router\TestRouteApi::class,
     \Quillstack\Router\Tests\Unit\RouteTree\TestRouteTreeFinder::class,
+    \Quillstack\Router\Tests\Unit\RouteTree\TestOverlappingRoutes::class,
 ];

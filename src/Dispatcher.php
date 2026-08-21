@@ -58,6 +58,8 @@ class Dispatcher implements DispatcherInterface
     /**
      * Splits the request into the segments walked through the route tree. The closing empty
      * segment marks the end of the branch, where the route itself is stored.
+     *
+     * @return string[]
      */
     private function getBranch(string $method, string $path): array
     {

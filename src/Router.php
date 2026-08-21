@@ -12,6 +12,8 @@ class Router implements RouterInterface
 {
     /**
      * All registered routes, keyed by `METHOD /path`.
+     *
+     * @var array<string, RouteInterface>
      */
     private array $routes = [];
 
@@ -22,6 +24,9 @@ class Router implements RouterInterface
      */
     private array $currentRoutes = [];
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $tree = [];
 
     public function __construct(private readonly RouteTreeBuilder $routeTreeBuilder)
@@ -164,6 +169,9 @@ class Router implements RouterInterface
         return null;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getTree(): array
     {
         return $this->tree;
