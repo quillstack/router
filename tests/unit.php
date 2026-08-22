@@ -16,6 +16,7 @@ return [
     \Quillstack\Router\Tests\Unit\Router\TestExactRouteWithQueryString::class,
     \Quillstack\Router\Tests\Unit\Router\TestStaticSegmentWins::class,
     \Quillstack\Router\Tests\Unit\Router\TestBacktracking::class,
+    \Quillstack\Router\Tests\Unit\Router\TestHeadFollowsGet::class,
     \Quillstack\Router\Tests\Unit\Router\TestHttpMethods::class,
     \Quillstack\Router\Tests\Unit\Router\TestMethodNotAllowed::class,
     \Quillstack\Router\Tests\Unit\Router\TestMethodNotAllowedWithParameters::class,

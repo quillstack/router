@@ -40,6 +40,6 @@ class TestMethodNotAllowedWithParameters extends AbstractTest
         $route = $this->getRoute($router);
 
         $this->assertObject->instanceOf(MethodNotAllowedRoute::class, $route);
-        $this->assertEqual->equal(['GET', 'PATCH'], $route->getAllowedMethods());
+        $this->assertEqual->equal(['GET', 'HEAD', 'PATCH'], $route->getAllowedMethods());
     }
 }

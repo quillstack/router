@@ -43,11 +43,13 @@ class TestMethodNotAllowed extends AbstractTest
 
         $this->assertObject->instanceOf(MethodNotAllowedRoute::class, $route);
         $this->assertBoolean->isFalse($route->isSuccess());
-        $this->assertEqual->equal(['GET'], $route->getAllowedMethods());
+        $this->assertEqual->equal(['GET', 'HEAD'], $route->getAllowedMethods());
     }
 
     /**
-     * A 405 has to say what is allowed, and every method the path answers to belongs there.
+     * A 405 has to say what is allowed, and every method the path answers to belongs there —
+     * HEAD included, because a path answering GET answers HEAD whether it was registered or
+     * not.
      */
     public function everyMethodThePathAnswersToIsNamed()
     {
@@ -57,7 +59,7 @@ class TestMethodNotAllowed extends AbstractTest
         $router->delete('/login', MockLoginController::class)->name('login.delete');
         $route = $this->getRoute($router);
 
-        $this->assertEqual->equal(['GET', 'PUT', 'DELETE'], $route->getAllowedMethods());
+        $this->assertEqual->equal(['GET', 'HEAD', 'PUT', 'DELETE'], $route->getAllowedMethods());
     }
 
     /**

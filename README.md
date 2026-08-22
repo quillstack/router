@@ -23,6 +23,9 @@ standing for having matched nothing:
 
 Both say `false` to `isSuccess()`, so anything only asking whether it matched keeps working.
 
+A path registered for `GET` also answers `HEAD`, which is what a server offering GET is
+expected to do — registering `head()` for the path still wins where it was done.
+
 ### Unit tests
 
 Run tests using a command:

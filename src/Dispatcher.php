@@ -44,8 +44,17 @@ class Dispatcher implements DispatcherInterface
 
     private function findRoute(string $method, string $path): ?RouteInterface
     {
-        return $this->findExactMatch($method, $path)
+        $route = $this->findExactMatch($method, $path)
             ?? $this->findParameterMatch($method, $path);
+
+        if ($route !== null || $method !== HttpRequest::METHOD_HEAD) {
+            return $route;
+        }
+
+        // A server answering GET answers HEAD: the same route, and a response carrying the
+        // headers without the body. Registering `head()` separately still wins, this is only
+        // what happens when nothing did.
+        return $this->findRoute(HttpRequest::METHOD_GET, $path);
     }
 
     /**
