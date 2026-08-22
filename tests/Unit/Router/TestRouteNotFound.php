@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Quillstack\Router\Tests\Unit\Router;
 
+use Quillstack\Router\Routes\NotFoundRoute;
 use Quillstack\Router\Tests\Mocks\AbstractTest;
 use Quillstack\Router\Tests\Mocks\Request\MockLoginRequest;
 use Quillstack\Router\Tests\Mocks\Router\MockLoginController;
 use Quillstack\Router\Tests\Mocks\Router\MockRegisterController;
 use Quillstack\Router\Tests\Mocks\Router\MockUserController;
-use Quillstack\Router\Routes\NotFoundRoute;
 use Quillstack\UnitTests\AssertEqual;
 use Quillstack\UnitTests\Types\AssertBoolean;
 use Quillstack\UnitTests\Types\AssertObject;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Quillstack\Router\Tests\Unit\RouteTree;
 
-use Quillstack\Router\RouteTree\RouteTreeBuilder;
 use Quillstack\Router\Router;
+use Quillstack\Router\RouteTree\RouteTreeBuilder;
 use Quillstack\Router\Tests\Mocks\Router\MockRegisterController;
 use Quillstack\Router\Tests\Mocks\Router\MockUserController;
 use Quillstack\UnitTests\Types\AssertArray;

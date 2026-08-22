@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Quillstack\Router\Tests\Unit\RouteTree\RouteTreeBuilder;
 
+use Quillstack\Router\RouteTree\RouteTreeBuilder;
 use Quillstack\Router\Tests\Mocks\AbstractTest;
 use Quillstack\Router\Tests\Mocks\Request\MockLoginRequest;
 use Quillstack\Router\Tests\Mocks\Router\MockLoginController;
-use Quillstack\Router\RouteTree\RouteTreeBuilder;
 use Quillstack\UnitTests\AssertEmpty;
 use Quillstack\UnitTests\AssertEqual;
 

@@ -6,9 +6,9 @@ namespace Quillstack\Router\Tests\Unit\Router;
 
 use Quillstack\Router\Exceptions\RouteNameNotSetException;
 use Quillstack\Router\Route;
-use Quillstack\Router\RouteTree\RouteTreeBuilder;
 use Quillstack\Router\Router;
 use Quillstack\Router\Routes\NotFoundRoute;
+use Quillstack\Router\RouteTree\RouteTreeBuilder;
 use Quillstack\Router\Tests\Mocks\Router\MockUserController;
 use Quillstack\UnitTests\AssertEqual;
 use Quillstack\UnitTests\AssertExceptions;
