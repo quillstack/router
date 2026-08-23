@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Quillstack\Router;
 
-class Route implements RouteInterface
+class Route implements GuardedRouteInterface, RouteInterface
 {
     /**
      * Matches a path segment holding a parameter, written either as `:name` or as `{name}`.
@@ -12,6 +12,20 @@ class Route implements RouteInterface
     private const PARAMETER_PATTERN = '#^(?::(?<colon>[A-Za-z_][A-Za-z0-9_]*)|\{(?<brace>[A-Za-z_][A-Za-z0-9_]*)\})$#';
 
     private string $name = '';
+
+    /**
+     * Whether the route may only be reached by somebody the application recognises, and which
+     * roles will do.
+     *
+     * Declared on the route rather than remembered in each controller: a guarantee which has
+     * to be repeated is a guarantee somebody will one day not repeat.
+     */
+    private bool $requiresAuthentication = false;
+
+    /**
+     * @var string[]
+     */
+    private array $requiredRoles = [];
 
     /**
      * Names of the parameters found in the path, in the order they appear.
@@ -117,6 +131,36 @@ class Route implements RouteInterface
     /**
      * {@inheritDoc}
      */
+    /**
+     * Says that only somebody the application recognises may reach this route, and — where
+     * roles are given — that they must hold one of them.
+     *
+     * @param string ...$roles
+     */
+    public function requireAuthentication(string ...$roles): self
+    {
+        $this->requiresAuthentication = true;
+        $this->requiredRoles = [...$this->requiredRoles, ...$roles];
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function requiresAuthentication(): bool
+    {
+        return $this->requiresAuthentication;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRequiredRoles(): array
+    {
+        return $this->requiredRoles;
+    }
+
     public function isSuccess(): bool
     {
         return true;

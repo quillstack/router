@@ -150,6 +150,26 @@ class Router implements RouterInterface
     /**
      * {@inheritDoc}
      */
+    public function requireAuthentication(string ...$roles): RouterInterface
+    {
+        if ($this->currentRoutes === []) {
+            throw new RouteNameNotSetException(
+                'No route to guard, call a routing method first'
+            );
+        }
+
+        foreach ($this->currentRoutes as $route) {
+            if ($route instanceof Route) {
+                $route->requireAuthentication(...$roles);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getRoutes(): array
     {
         return $this->routes;

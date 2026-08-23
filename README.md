@@ -81,6 +81,28 @@ $router->getRoute('users.show')->getPath();   // '/users/:id'
 $router->getRoutes();                          // every route, keyed by `METHOD /path`
 ```
 
+#### Guarding a route
+
+A route says what reaching it requires, and one place enforces it — a rule kept in each
+controller instead is a rule which is one day not kept:
+
+```php
+$router->get('/orders', OrdersController::class)->requireAuthentication();
+$router->delete('/orders/:id', DeleteOrderController::class)->requireAuthentication('admin');
+$router->match(['PUT', 'PATCH'], '/orders/:id', UpdateOrderController::class)
+    ->requireAuthentication('admin', 'support');
+```
+
+Any one of the roles will do. Nothing is guarded unless it says so, so this changed no route
+anybody had already written.
+
+A route which says this implements `GuardedRouteInterface`, which is kept apart from
+`RouteInterface` for the same reason: something implementing a route without answering these
+is a route nobody guards, which is what every route was before.
+
+Enforcing it is [quillstack/auth](https://github.com/quillstack/auth)'s job — this package
+only carries what was asked for.
+
 ### Dispatching
 
 `Dispatcher::dispatch()` answers with the route that matched, or with one of two standing for

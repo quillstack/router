@@ -43,6 +43,12 @@ interface RouterInterface
     public function name(string $name): RouterInterface;
 
     /**
+     * Says that the routes just registered may only be reached by somebody the application
+     * recognises, and — where roles are given — that they must hold one of them.
+     */
+    public function requireAuthentication(string ...$roles): RouterInterface;
+
+    /**
      * @return RouteInterface[]
      */
     public function getRoutes(): array;
