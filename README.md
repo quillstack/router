@@ -6,6 +6,11 @@
 [![PHP Version](https://img.shields.io/packagist/php-v/quillstack/router)](https://packagist.org/packages/quillstack/router)
 [![StyleCI](https://github.styleci.io/repos/291464195/shield?branch=main)](https://github.styleci.io/repos/291464195?branch=main)
 [![CodeFactor](https://www.codefactor.io/repository/github/quillstack/router/badge)](https://www.codefactor.io/repository/github/quillstack/router)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=quillstack_router&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=quillstack_router)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_router&metric=coverage)](https://sonarcloud.io/summary/new_code?id=quillstack_router)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=quillstack_router&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_router)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=quillstack_router&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_router)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=quillstack_router&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_router)
 [![License](https://img.shields.io/packagist/l/quillstack/router)](https://github.com/quillstack/router/blob/main/LICENSE)
 
 The routing library working with PSR-7 requests.
