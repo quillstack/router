@@ -10,7 +10,7 @@
         "php",
         "php7"
     ],
-    "homepage": "https://quillstack.org/router",
+    "homepage": "https://quillstack.org/packages/router",
     "authors": [
         {
             "name": "Radek Ziemniewicz",
