@@ -20,19 +20,43 @@ Routes are registered once and matched against the request. A path without param
 by a straight lookup; one with them walks a tree, so adding routes does not make matching
 slower in the way a list of patterns tried in turn does.
 
-### Requirements
+## Why this exists
+
+A router that only answers *which controller* leaves the interesting cases to whoever calls it.
+A path nobody registered and a path registered for a different method are different answers, and
+an API that returns `404` for both is lying about one of them. `HEAD` is answered by whatever
+answers `GET`, unless somebody registered `HEAD` separately. And a route that requires
+authentication should say so where it is declared, not in the controller where it can be
+forgotten.
+
+So dispatching here gives back a route object rather than a match: it knows whether it succeeded,
+which methods a known path does allow, what the parameters matched, and whether reaching it
+requires anybody. **One middleware enforces that last one**, and a guarded route in an
+application with nothing to enforce it refuses to boot — see
+[quillstack/auth](https://github.com/quillstack/auth).
+
+## Requirements
 
 - PHP 8.1 or newer
 
-### Installation
+## Installation
 
 ```shell
 composer require quillstack/router
 ```
 
-### Usage
+## Usage
 
-#### Registering
+### Registering
+
+```php
+use Quillstack\Router\Router;
+
+$router = new Router();
+```
+
+It needs nothing to be built, and neither does the dispatcher: `new Dispatcher($router)`.
+
 
 ```php
 $router->get('/', HomeController::class)->name('home');
@@ -44,7 +68,7 @@ $router->delete('/users/:id', DeleteUserController::class)->name('users.delete')
 method. `map('GET', …)` takes the method as an argument, `match(['PUT', 'PATCH'], …)` takes a
 few of them, and `any()` takes them all.
 
-#### Parameters
+### Parameters
 
 A segment written as `:id` or as `{id}` is a parameter:
 
@@ -72,7 +96,7 @@ $router->get('/users/:id', UserController::class);
 // GET /users/42   → UserController
 ```
 
-#### Naming, and finding by name
+### Naming, and finding by name
 
 ```php
 $router->get('/users/:id', UserController::class)->name('users.show');
@@ -81,7 +105,7 @@ $router->getRoute('users.show')->getPath();   // '/users/:id'
 $router->getRoutes();                          // every route, keyed by `METHOD /path`
 ```
 
-#### Guarding a route
+### Guarding a route
 
 A route says what reaching it requires, and one place enforces it — a rule kept in each
 controller instead is a rule which is one day not kept:
@@ -123,7 +147,7 @@ expected to do — registering `head()` for the path still wins where it was don
 Dispatching reads the path out of the URI, so a query string does not turn a known route into
 a 404.
 
-### Technical documentation
+## Technical documentation
 
 | Class | What it is |
 | --- | --- |
@@ -139,7 +163,50 @@ trailing one, so `/users/` and `users` are the same route.
 `RouteNameNotSetException` is thrown by `name()` when there is no route to name — that is,
 when it is called before any routing method.
 
-### Unit tests
+## Benchmark
+
+Measured with [quillstack/benchmark](https://github.com/quillstack/benchmark) on forty routes —
+five per resource across eight resources, most of them carrying a parameter — matching
+`GET /projects/42`. All four find the same route and read the same `id`. Runs are interleaved
+and unconcurrent, each figure is the median of five, and PHP is 8.5.7.
+
+| | Version |
+| --- | --- |
+| quillstack/router | v0.8.0 |
+| nikic/fast-route | 1.3.1 |
+| symfony/routing | v7.4.17 |
+| league/route | 6.2.0 |
+
+**Registering forty routes and matching one, in a fresh process:**
+
+| | Time | Relative |
+| --- | --- | --- |
+| nikic/fast-route | 3.10 ms | 0.47× |
+| symfony/routing | 4.91 ms | 0.74× |
+| **quillstack/router** | **6.60 ms** | — |
+| league/route | 12.67 ms | 1.9× |
+
+**Matching alone**, from a router already built:
+
+| | Per match | Relative |
+| --- | --- | --- |
+| nikic/fast-route | 1.09 µs | 0.35× |
+| symfony/routing, compiled and dumped | 2.11 µs | 0.67× |
+| **quillstack/router** | **3.13 µs** | — |
+| league/route | 7.61 µs | 2.4× |
+| symfony/routing, uncompiled | 22.9 µs | 7.3× |
+
+**`nikic/fast-route` is three times faster at matching and this one is third of four**, which is
+worth stating rather than arranging around. It is also a different job: fast-route takes a method
+string and a path string and gives back an array. This takes a PSR-7 request and gives back a
+route that knows whether it matched, which methods the path allows if it did not, and whether
+reaching it needs authentication — and that request has to be built and read, which is most of
+the gap.
+
+The last row is Symfony's matcher without its dump, which is a build step this one does not have;
+the row above it is the fair one.
+
+## Tests
 
 ```shell
 composer test
@@ -147,13 +214,16 @@ composer test:coverage
 composer stan
 ```
 
-### Docker
+## The rest of Quillstack
 
-```shell
-docker-compose up -d
-docker exec -w /var/www/html -it quillstack_router sh
-```
+This is one component of [Quillstack](https://github.com/quillstack), a PHP framework which is
+as simple to use as it is strict about what it does.
 
-### License
+- [quillstack/middleware](https://github.com/quillstack/middleware) — what calls this
+- [quillstack/auth](https://github.com/quillstack/auth) — what enforces a guarded route
+- [quillstack/server-request](https://github.com/quillstack/server-request) — what is dispatched
+- [quillstack/framework](https://github.com/quillstack/framework) — where it is all wired up
+
+## License
 
 MIT. See [LICENSE](LICENSE).
