@@ -29,9 +29,16 @@ class Router implements RouterInterface
      */
     private array $tree = [];
 
-    public function __construct(private readonly RouteTreeBuilder $routeTreeBuilder)
+    private readonly RouteTreeBuilder $routeTreeBuilder;
+
+    /**
+     * The tree builder needs nothing itself, so one is made here where none was given: a router
+     * which cannot be built without first building something else is a container's job to
+     * assemble, and registering a few routes should not require one.
+     */
+    public function __construct(?RouteTreeBuilder $routeTreeBuilder = null)
     {
-        //
+        $this->routeTreeBuilder = $routeTreeBuilder ?? new RouteTreeBuilder();
     }
 
     /**

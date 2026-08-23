@@ -12,11 +12,16 @@ use Quillstack\Router\RouteTree\RouteTreeFinder;
 
 class Dispatcher implements DispatcherInterface
 {
+    private readonly RouteTreeFinder $routeTreeFinder;
+
+    /**
+     * The finder needs nothing either, so the usual case is `new Dispatcher($router)`.
+     */
     public function __construct(
         private readonly Router $router,
-        private readonly RouteTreeFinder $routeTreeFinder
+        ?RouteTreeFinder $routeTreeFinder = null
     ) {
-        //
+        $this->routeTreeFinder = $routeTreeFinder ?? new RouteTreeFinder();
     }
 
     /**
